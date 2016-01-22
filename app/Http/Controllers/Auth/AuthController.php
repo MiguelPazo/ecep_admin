@@ -3,36 +3,66 @@
 use Ale\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
-use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
-class AuthController extends Controller {
+class AuthController extends Controller
+{
+    /**
+     * The Guard implementation.
+     *
+     * @var \Illuminate\Contracts\Auth\Guard
+     */
+    protected $auth;
+    protected $request;
 
-	/*
-	|--------------------------------------------------------------------------
-	| Registration & Login Controller
-	|--------------------------------------------------------------------------
-	|
-	| This controller handles the registration of new users, as well as the
-	| authentication of existing users. By default, this controller uses
-	| a simple trait to add these behaviors. Why don't you explore it?
-	|
-	*/
+    public function __construct(Guard $auth, Registrar $registrar, Request $request)
+    {
+        $this->auth = $auth;
+        $this->request = $request;
 
-	use AuthenticatesAndRegistersUsers;
+        $this->middleware('guest', ['except' => ['getLogout', 'postLogin']]);
+    }
 
-	/**
-	 * Create a new authentication controller instance.
-	 *
-	 * @param  \Illuminate\Contracts\Auth\Guard  $auth
-	 * @param  \Illuminate\Contracts\Auth\Registrar  $registrar
-	 * @return void
-	 */
-	public function __construct(Guard $auth, Registrar $registrar)
-	{
-		$this->auth = $auth;
-		$this->registrar = $registrar;
+    public function getLogin()
+    {
+        return view('app');
+    }
 
-		$this->middleware('guest', ['except' => 'getLogout']);
-	}
+    public function postLogin()
+    {
+        $this->validate($this->request, [
+            'email' => 'required',
+            'password' => 'required'
+        ]);
 
+        $jResponse = [
+            'success' => false,
+            'message' => '',
+            'url' => ''
+        ];
+
+        return response()->json($jResponse);
+    }
+
+    public function redirectPath()
+    {
+        if (property_exists($this, 'redirectPath')) {
+            return $this->redirectPath;
+        }
+
+        return property_exists($this, 'redirectTo') ? $this->redirectTo : url('/admin');
+    }
+
+    public function loginPath()
+    {
+        return property_exists($this, 'loginPath') ? $this->loginPath : '/';
+    }
+
+    public function getLogout()
+    {
+        Session::flush();
+
+        return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/');
+    }
 }

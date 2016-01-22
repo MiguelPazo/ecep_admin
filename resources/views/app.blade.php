@@ -1,62 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<!--[if lt IE 8]>
+<html class="no-js lt-ie8"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Laravel</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
+    <title>Alena</title>
+    <meta name="description" content="Módulo administrativo de Alena."/>
+    <meta name="keywords" content="store, tienda, alena"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 
-	<link href="/css/app.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/js/libs/material-design-lite/material.min.css') }}"/>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,500,700,300,300italic,500italic|Roboto+Condensed:400,300'
+          rel='stylesheet' type='text/css'/>
+    <link rel="stylesheet" type="text/css"
+          href="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.teal-blue.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/main.css') }}"/>
 
-	<!-- Fonts -->
-	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
-
-	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	<!--[if lt IE 9]>
-		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-	<![endif]-->
+    <script src="{{ asset('/js/libs/material-design-lite/material.min.js') }}"></script>
 </head>
 <body>
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-					<span class="sr-only">Toggle Navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#">Laravel</a>
-			</div>
+<!--[if lt IE 9]>
+<div class="lt-ie9-bg">
+    <p class="browsehappy">Estas usando un navegador <strong>muy antiguo</strong>
+        <a href="http://browsehappy.com/">actualizate</a>, vive una mejor experiencia y se feliz :D</p>
+</div>
+<![endif]-->
 
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
-					<li><a href="/">Home</a></li>
-				</ul>
+<div id="loader-container"></div>
+<div class="mdl-layout">
+    <main class="mdl-layout__content">
+        <div class="mdl-grid">
+            <section class="section--center mdl-grid signin-form">
 
-				<ul class="nav navbar-nav navbar-right">
-					@if (Auth::guest())
-						<li><a href="/auth/login">Login</a></li>
-						<li><a href="/auth/register">Register</a></li>
-					@else
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
-							<ul class="dropdown-menu" role="menu">
-								<li><a href="/auth/logout">Logout</a></li>
-							</ul>
-						</li>
-					@endif
-				</ul>
-			</div>
-		</div>
-	</nav>
 
-	@yield('content')
+                <div class="mdl-card mdl-shadow--6dp">
+                    <div class="mdl-card__title mdl-card--expand signin-title">
+                        <h1 class="mdl-card__title-text">Alena</h1>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" autocomplete="off">
+                            <label class="mdl-textfield__label">Email</label>
+                        </div>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="password" autocomplete="off">
+                            <label class="mdl-textfield__label">Contraseña</label>
+                        </div>
+                    </div>
+                    <div class="mdl-card__actions align_right">
+                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                            Ingresar
+                        </a>
+                    </div>
+                </div>
+                <div class="additional-info">
+                    <a href="#">Registrarse</a>
+                    <span class="divider-horizontal"></span>
+                    <a href="#">¿Olvidó su contraseña?</a>
+                </div>
+                <div class="back-squeare">
+                </div>
 
-	<!-- Scripts -->
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+            </section>
+        </div>
+    </main>
+</div>
 </body>
 </html>
