@@ -1,3 +1,8 @@
+
+* {
+    box-sizing: border-box;
+}
+
 body {
     background-color: #EDF0F1;
     text-rendering: optimizelegibility !important;
@@ -53,14 +58,20 @@ a {
     position: relative;
 }
 
+.signin-form .mdl-cell--12-col,
+.signin-form .mdl-card__supporting-text,
+.signin-form .mdl-textfield {
+    width: 100%;
+}
+
 .signin-form a {
     color: #ffffff;
 }
 
 .signin-form .back-squeare {
     background-color: #009688;
-    bottom: 0;
-    height: 220px;
+    bottom: 35px;
+    height: 230px;
     left: 0;
     position: absolute;
     text-align: center;
@@ -69,8 +80,7 @@ a {
 }
 
 .signin-form .additional-info {
-    bottom: 25px;
-    left: 80px;
-    position: absolute;
+    margin-top: 30px;
+    text-align: center;
     width: 100%;
 }

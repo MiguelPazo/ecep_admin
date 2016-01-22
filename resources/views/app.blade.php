@@ -32,10 +32,8 @@
 <div class="mdl-layout">
     <main class="mdl-layout__content">
         <div class="mdl-grid">
-            <section class="section--center mdl-grid signin-form">
-
-
-                <div class="mdl-card mdl-shadow--6dp">
+            <section class="section--center mdl-grid mdl-cell--4-col signin-form">
+                <div class="mdl-card mdl-cell--12-col mdl-shadow--6dp">
                     <div class="mdl-card__title mdl-card--expand signin-title">
                         <h1 class="mdl-card__title-text">Alena</h1>
                     </div>
