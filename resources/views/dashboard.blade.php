@@ -5,5 +5,12 @@
 @endsection
 
 @section('content')
-    DASHBOARD
+    <div class="container">
+        DASHBOARD
+    </div>
+@endsection
+
+@section('scripts')
+    <script src="{{ asset('/js/app/controllers/dashboardController.js') }}"></script>
+    <script src="{{ asset('/js/app/service/dashboardService.js') }}"></script>
 @endsection

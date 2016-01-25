@@ -75,6 +75,10 @@ header {
     z-index: 100;
 }
 
+textarea {
+    padding: 0px !important;
+}
+
 .btn-without-shadow,
 .btn-without-shadow:hover {
     box-shadow: none;
@@ -348,6 +352,33 @@ header {
     display: block;
     font-size: 1.1rem;
     line-height: 1.5;
+}
+
+.main-container .content-container .container > h4 {
+    color: #009688;
+}
+
+.main-container .content-container .container .form-new {
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+
+.main-container .content-container .container .form-new .btn-options button {
+    margin-left: 15px;
+}
+
+.main-container .content-container .container .form-new .select-wrapper {
+    margin-left: 3rem;
+    position: relative;
+    width: calc(100% - 3rem);
+}
+
+.main-container .content-container .container .form-new textarea {
+    max-height: 140px;
+}
+
+.modal .modal-footer a {
+    margin-left: 15px !important;
 }
 
 @media (min-width: 960px) {

@@ -1,8 +1,8 @@
 <!DOCTYPE HTML>
 <!--[if lt IE 8]>
-<html class="no-js lt-ie8"> <![endif]-->
+<html class="no-js lt-ie8" data-ng-app="alena"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html class="no-js"> <!--<![endif]-->
+<html class="no-js" data-ng-app="alena"> <!--<![endif]-->
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
@@ -14,6 +14,9 @@
     <link type="text/css" rel="stylesheet" media="screen,projection"
           href="{{ asset('/js/libs/materialize/dist/css/materialize.min.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/main.css') }}"/>
+    <script>
+        var BASE_URL = '{{ asset('/')}}';
+    </script>
 </head>
 <body>
 <!--[if lt IE 9]>
@@ -68,12 +71,13 @@
 <div class="main-container">
     @yield('leftsidebar')
     <div class="content-container">
-        <div class="container">
-            @yield('content')
-        </div>
+        @yield('content')
     </div>
 </div>
 <script src="{{ asset('/js/libs/jquery/dist/jquery.min.js') }}"></script>
 <script src="{{ asset('/js/libs/materialize/dist/js/materialize.min.js') }}"></script>
+<script src="{{ asset('/js/libs/angular/angular.min.js') }}"></script>
+<script src="{{ asset('/js/app/app.js') }}"></script>
+@yield('scripts')
 </body>
 </html>
