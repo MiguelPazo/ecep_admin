@@ -1,9 +1,9 @@
 @extends('app')
 
 @section('leftsidebar')
-    @include('__partials.leftsidebar', ['option' => 'dashboard'])
+    @include('__partials.leftsidebar', ['option' => 'shop'])
 @endsection
 
 @section('content')
-    DASHBOARD
+    STORE
 @endsection
