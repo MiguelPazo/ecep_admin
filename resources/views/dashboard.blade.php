@@ -16,14 +16,14 @@
                         <span class="card-title activator grey-text text-darken-4">
                             Monitoreo<i class="material-icons right">more_vert</i>
                         </span>
-                        <p><a href="#">Ver</a></p>
+                        <p><a href="https://pki.reniec.gob.pe/dashboard/" target="_blank">Ver</a></p>
                     </div>
                     <div class="card-reveal">
                         <span class="card-title grey-text text-darken-4">
                             Monitoreo <i class="material-icons right">close</i>
                         </span>
                         <p>Monitoreo de la generación de Certificados Digitales.</p>
-                        <p><a href="#">Ver</a></p>
+                        <p><a href="https://pki.reniec.gob.pe/dashboard/" target="_blank">Ver</a></p>
                     </div>
                 </div>
             </div>
