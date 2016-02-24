@@ -7,18 +7,18 @@
             </a>
         </li>
         <li class="{{ ($option == 'shop')? 'active' : '' }}">
-            <a href="{{ url('admin/shop/') }}" class="waves-effect waves-light btn btn-without-shadow">
-                <i class="material-icons">&#xE8D1;</i>Tienda
+            <a href="#" class="waves-effect waves-light btn btn-without-shadow">
+                <i class="material-icons">&#xE8D1;</i>Planta PKI
             </a>
         </li>
         <li class="{{ ($option == 'category')? 'active' : '' }}">
-            <a href="{{ url('admin/category/') }}" class="waves-effect waves-light btn btn-without-shadow">
-                <i class="material-icons">&#xE886;</i>Categorias
+            <a href="#" class="waves-effect waves-light btn btn-without-shadow">
+                <i class="material-icons">&#xE886;</i>Usuarios Active Directory
             </a>
         </li>
         <li class="{{ ($option == 'product')? 'active' : '' }}">
-            <a href="{{ url('admin/product/') }}" class="waves-effect waves-light btn btn-without-shadow">
-                <i class="material-icons">&#xE0E0;</i>Productos
+            <a href="#" class="waves-effect waves-light btn btn-without-shadow">
+                <i class="material-icons">&#xE0E0;</i>DNIe
             </a>
         </li>
         <li class="nav-divider"></li>

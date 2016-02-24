@@ -1,14 +1,12 @@
 <!DOCTYPE HTML>
 <!--[if lt IE 8]>
-<html class="no-js lt-ie8" data-ng-app="alena"> <![endif]-->
+<html class="no-js lt-ie8" data-ng-app="ecep"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html class="no-js" data-ng-app="alena"> <!--<![endif]-->
+<html class="no-js" data-ng-app="ecep"> <!--<![endif]-->
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
-    <title>Alena</title>
-    <meta name="description" content="Módulo administrativo de Alena."/>
-    <meta name="keywords" content="store, tienda, alena"/>
+    <title>ECEP</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 
     <link type="text/css" rel="stylesheet" media="screen,projection"
@@ -31,7 +29,7 @@
 </div>
 <header class="z-depth-1">
     <div class="logo teal">
-        <a href="#">Alena</a>
+        <a href="#">ECEP</a>
     </div>
     <div class="nav-top">
         <ul class="list-unstyled nav-left">
@@ -43,11 +41,6 @@
             <li class="hide-on-small-only">
                 <a class="waves-effect btn btn-without-shadow">
                     <i class="material-icons">&#xE8B8;</i>
-                </a>
-            </li>
-            <li>
-                <a class="waves-effect btn btn-without-shadow">
-                    <i class="material-icons">&#xE8D1;</i>
                 </a>
             </li>
             <li class="hide-on-small-only">
