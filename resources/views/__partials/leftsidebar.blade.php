@@ -2,7 +2,7 @@
     <ul>
         <li class="nav-title">Navegación</li>
         <li class="{{ ($option == 'dashboard')? 'active' : '' }}">
-            <a href="{{ url('admin/') }}" class="waves-effect waves-light btn btn-without-shadow">
+            <a href="#" class="waves-effect waves-light btn btn-without-shadow">
                 <i class="material-icons">&#xE88A;</i>Resumen
             </a>
         </li>
