@@ -4,17 +4,14 @@
 <!--[if gt IE 8]><!-->
 <html class="no-js" data-ng-app="ecep"> <!--<![endif]-->
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8">
     <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
     <title>ECEP</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
     <link type="text/css" rel="stylesheet" media="screen,projection"
-          href="{{ asset('/js/libs/materialize/dist/css/materialize.min.css') }}"/>
-    <link rel="stylesheet" type="text/css" href="{{ asset('/css/main.css') }}"/>
-    <script>
-        var BASE_URL = '{{ asset('/')}}';
-    </script>
+          href="js/libs/materialize/dist/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
 <!--[if lt IE 9]>
@@ -53,7 +50,7 @@
             <li>
                 <a class="waves-effect btn btn-without-shadow btn-user">
                     <div class="chip">
-                        <img src="{{ asset('img/user.jpg') }}" alt="Contact Person">
+                        <img src="img/user.jpg" alt="Contact Person">
                         Jane Doe
                     </div>
                 </a>
@@ -67,10 +64,10 @@
         @yield('content')
     </div>
 </div>
-<script src="{{ asset('/js/libs/jquery/dist/jquery.min.js') }}"></script>
-<script src="{{ asset('/js/libs/materialize/dist/js/materialize.min.js') }}"></script>
-<script src="{{ asset('/js/libs/angular/angular.min.js') }}"></script>
-<script src="{{ asset('/js/app/app.js') }}"></script>
+<script src="js/libs/jquery/dist/jquery.min.js"></script>
+<script src="js/libs/materialize/dist/js/materialize.min.js"></script>
+<script src="js/libs/angular/angular.min.js"></script>
+<script src="js/app/app.js"></script>
 @yield('scripts')
 </body>
 </html>
