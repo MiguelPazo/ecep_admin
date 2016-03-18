@@ -195,7 +195,7 @@ textarea {
     background-color: #fff;
     border-right: 1px solid rgba(255, 255, 255, 0.06);
     color: #3d4051;
-    float: left;
+	display: inline-block;
     height: auto;
     line-height: normal;
     padding: 20px 24px;

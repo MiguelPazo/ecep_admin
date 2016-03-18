@@ -29,33 +29,33 @@
         <a href="#">ECEP</a>
     </div>
     <div class="nav-top">
-        <ul class="list-unstyled nav-left">
-            <li class="hide-on-small-only">
-                <a class="waves-effect btn btn-without-shadow">
-                    <i class="material-icons">&#xE8FE;</i>
-                </a>
-            </li>
-            <li class="hide-on-small-only">
-                <a class="waves-effect btn btn-without-shadow">
-                    <i class="material-icons">&#xE8B8;</i>
-                </a>
-            </li>
-            <li class="hide-on-small-only">
-                <a class="waves-effect btn btn-without-shadow">
-                    <i class="material-icons">search</i>
-                </a>
-            </li>
-        </ul>
+	{{--<ul class="list-unstyled nav-left">--}}
+            {{--<li class="hide-on-small-only">--}}
+                {{--<a class="waves-effect btn btn-without-shadow">--}}
+                    {{--<i class="material-icons">&#xE8FE;</i>--}}
+                {{--</a>--}}
+            {{--</li>--}}
+            {{--<li class="hide-on-small-only">--}}
+                {{--<a class="waves-effect btn btn-without-shadow">--}}
+                    {{--<i class="material-icons">&#xE8B8;</i>--}}
+                {{--</a>--}}
+            {{--</li>--}}
+            {{--<li class="hide-on-small-only">--}}
+                {{--<a class="waves-effect btn btn-without-shadow">--}}
+                    {{--<i class="material-icons">&#xE8B6;</i>--}}
+                {{--</a>--}}
+            {{--</li>--}}
+        {{--</ul>--}}
         <ul class="list-unstyled nav-right">
             <li>
                 <a class="waves-effect btn btn-without-shadow btn-user">
                     <div class="chip">
                         <img src="img/user.jpg" alt="Contact Person">
-                        Jane Doe
+                        {{ $names}}
                     </div>
                 </a>
             </li>
-        </ul>
+	</ul>
     </div>
 </header>
 <div class="main-container">
