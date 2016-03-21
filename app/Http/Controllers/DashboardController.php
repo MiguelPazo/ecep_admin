@@ -29,4 +29,9 @@ class DashboardController extends Controller
 
         return view('dashboard')->with('names', $name);
     }
+
+    public function getPermission()
+    {
+        return view('permission');
+    }
 }

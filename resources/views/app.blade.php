@@ -9,13 +9,16 @@
     <title>ECEP</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
+    <link rel="stylesheet" href="{{ asset('/js/libs/PACE/themes/green/pace-theme-loading-bar.css') }}"/>
+    <script src="{{ asset('/js/libs/PACE/pace.min.js') }}"></script>
+
     <link type="text/css" rel="stylesheet" media="screen,projection"
           href="{{ pHelper::baseUrl('/js/libs/materialize/dist/css/materialize.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ pHelper::baseUrl('/css/main.css') }}">
-
-    <link rel="shortcut icon" href="img/icon.png'">
+    <link rel="shortcut icon" href="{{ pHelper::baseUrl('/img/icon.png') }}">
 </head>
 <body>
+<div class="preloader"></div>
 <!--[if lt IE 9]>
 <div class="lt-ie9-bg">
     <p class="browsehappy">Estas usando un navegador <strong>muy antiguo</strong>
@@ -31,23 +34,6 @@
         <a href="#">ECEP</a>
     </div>
     <div class="nav-top">
-        {{--<ul class="list-unstyled nav-left">--}}
-        {{--<li class="hide-on-small-only">--}}
-        {{--<a class="waves-effect btn btn-without-shadow">--}}
-        {{--<i class="material-icons">&#xE8FE;</i>--}}
-        {{--</a>--}}
-        {{--</li>--}}
-        {{--<li class="hide-on-small-only">--}}
-        {{--<a class="waves-effect btn btn-without-shadow">--}}
-        {{--<i class="material-icons">&#xE8B8;</i>--}}
-        {{--</a>--}}
-        {{--</li>--}}
-        {{--<li class="hide-on-small-only">--}}
-        {{--<a class="waves-effect btn btn-without-shadow">--}}
-        {{--<i class="material-icons">&#xE8B6;</i>--}}
-        {{--</a>--}}
-        {{--</li>--}}
-        {{--</ul>--}}
         <ul class="list-unstyled nav-right">
             <li>
                 <a data-activates="dp_user" class="dropdown-button waves-effect btn btn-without-shadow btn-user">
@@ -65,7 +51,7 @@
         </li>
         <li class="divider"></li>
         <li>
-            <a href="#!">Salir</a>
+            <a href="https://idp.reniec.gob.pe/idp/shibbolethLogout.jsp">Salir</a>
         </li>
     </ul>
 </header>

@@ -79,6 +79,14 @@ textarea {
     padding: 0px !important;
 }
 
+.preloader {
+    background-color: #FFFFFF;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 200;
+}
+
 .btn-without-shadow,
 .btn-without-shadow:hover {
     box-shadow: none;
@@ -195,7 +203,7 @@ textarea {
     background-color: #fff;
     border-right: 1px solid rgba(255, 255, 255, 0.06);
     color: #3d4051;
-	display: inline-block;
+    display: inline-block;
     height: auto;
     line-height: normal;
     padding: 20px 24px;
@@ -380,9 +388,11 @@ textarea {
 .modal .modal-footer a {
     margin-left: 15px !important;
 }
-#dp_user li a{
-	width: 100%;
+
+#dp_user li a {
+    width: 100%;
 }
+
 @media (min-width: 960px) {
 
 }

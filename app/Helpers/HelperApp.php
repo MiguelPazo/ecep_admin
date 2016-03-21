@@ -1,6 +1,6 @@
 <?php namespace Ecep\Helpers;
 
-class PersonalHelper
+class HelperApp
 {
     public static function baseUrl($url = '')
     {
