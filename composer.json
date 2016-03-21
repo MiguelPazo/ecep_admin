@@ -16,7 +16,7 @@
 			"database"
 		],
 		"psr-4": {
-			"Ale\\": "app/"
+			"Ecep\\": "app/"
 		}
 	},
 	"autoload-dev": {

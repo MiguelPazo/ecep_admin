@@ -1,4 +1,4 @@
-<?php namespace Ale\Console\Commands;
+<?php namespace Ecep\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Inspiring;

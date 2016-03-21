@@ -1,6 +1,6 @@
-<?php namespace Ale\Services;
+<?php namespace Ecep\Services;
 
-use Ale\User;
+use Ecep\User;
 use Validator;
 use Illuminate\Contracts\Auth\Registrar as RegistrarContract;
 

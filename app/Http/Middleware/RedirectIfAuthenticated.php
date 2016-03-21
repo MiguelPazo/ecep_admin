@@ -1,4 +1,4 @@
-<?php namespace Ale\Http\Middleware;
+<?php namespace Ecep\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;

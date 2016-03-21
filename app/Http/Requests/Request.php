@@ -1,4 +1,4 @@
-<?php namespace Ale\Http\Requests;
+<?php namespace Ecep\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

@@ -10,7 +10,7 @@
             <div class="col s3 m4 l4">
                 <div class="card">
                     <div class="card-image waves-effect waves-block waves-light">
-                        <img class="activator" src="img/monitoreo.svg">
+                        <img class="activator" src="{{ pHelper::baseUrl('/img/monitoreo.svg') }}">
                     </div>
                     <div class="card-content">
                         <span class="card-title activator grey-text text-darken-4">
@@ -29,9 +29,4 @@
             </div>
         </div>
     </div>
-@endsection
-
-@section('scripts')
-    <script src="js/app/controllers/dashboardController.js"></script>
-    <script src="js/app/service/dashboardService.js"></script>
 @endsection

@@ -1,4 +1,4 @@
-<?php namespace Ale\Providers;
+<?php namespace Ecep\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

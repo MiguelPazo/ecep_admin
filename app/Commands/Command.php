@@ -1,4 +1,4 @@
-<?php namespace Ale\Commands;
+<?php namespace Ecep\Commands;
 
 abstract class Command {
 

@@ -1,4 +1,4 @@
-<?php namespace Ale\Exceptions;
+<?php namespace Ecep\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;

@@ -1,4 +1,4 @@
-<?php namespace Ale\Providers;
+<?php namespace Ecep\Providers;
 
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;

@@ -1,4 +1,4 @@
-<?php namespace Ale;
+<?php namespace Ecep;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;

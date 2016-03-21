@@ -1,4 +1,4 @@
-<?php namespace Ale\Events;
+<?php namespace Ecep\Events;
 
 abstract class Event {
 

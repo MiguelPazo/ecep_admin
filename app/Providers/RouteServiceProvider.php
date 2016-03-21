@@ -1,4 +1,4 @@
-<?php namespace Ale\Providers;
+<?php namespace Ecep\Providers;
 
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -12,7 +12,7 @@ class RouteServiceProvider extends ServiceProvider {
 	 *
 	 * @var string
 	 */
-	protected $namespace = 'Ale\Http\Controllers';
+	protected $namespace = 'Ecep\Http\Controllers';
 
 	/**
 	 * Define your route model bindings, pattern filters, etc.

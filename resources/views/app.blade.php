@@ -10,10 +10,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
     <link type="text/css" rel="stylesheet" media="screen,projection"
-          href="js/libs/materialize/dist/css/materialize.min.css">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
-	
-	<link rel="shortcut icon" href="img/icon.png'">
+          href="{{ pHelper::baseUrl('/js/libs/materialize/dist/css/materialize.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ pHelper::baseUrl('/css/main.css') }}">
+
+    <link rel="shortcut icon" href="img/icon.png'">
 </head>
 <body>
 <!--[if lt IE 9]>
@@ -31,35 +31,35 @@
         <a href="#">ECEP</a>
     </div>
     <div class="nav-top">
-	{{--<ul class="list-unstyled nav-left">--}}
-            {{--<li class="hide-on-small-only">--}}
-                {{--<a class="waves-effect btn btn-without-shadow">--}}
-                    {{--<i class="material-icons">&#xE8FE;</i>--}}
-                {{--</a>--}}
-            {{--</li>--}}
-            {{--<li class="hide-on-small-only">--}}
-                {{--<a class="waves-effect btn btn-without-shadow">--}}
-                    {{--<i class="material-icons">&#xE8B8;</i>--}}
-                {{--</a>--}}
-            {{--</li>--}}
-            {{--<li class="hide-on-small-only">--}}
-                {{--<a class="waves-effect btn btn-without-shadow">--}}
-                    {{--<i class="material-icons">&#xE8B6;</i>--}}
-                {{--</a>--}}
-            {{--</li>--}}
+        {{--<ul class="list-unstyled nav-left">--}}
+        {{--<li class="hide-on-small-only">--}}
+        {{--<a class="waves-effect btn btn-without-shadow">--}}
+        {{--<i class="material-icons">&#xE8FE;</i>--}}
+        {{--</a>--}}
+        {{--</li>--}}
+        {{--<li class="hide-on-small-only">--}}
+        {{--<a class="waves-effect btn btn-without-shadow">--}}
+        {{--<i class="material-icons">&#xE8B8;</i>--}}
+        {{--</a>--}}
+        {{--</li>--}}
+        {{--<li class="hide-on-small-only">--}}
+        {{--<a class="waves-effect btn btn-without-shadow">--}}
+        {{--<i class="material-icons">&#xE8B6;</i>--}}
+        {{--</a>--}}
+        {{--</li>--}}
         {{--</ul>--}}
         <ul class="list-unstyled nav-right">
             <li>
-				<a data-activates="dp_user" class="dropdown-button waves-effect btn btn-without-shadow btn-user">
+                <a data-activates="dp_user" class="dropdown-button waves-effect btn btn-without-shadow btn-user">
                     <div class="chip">
-                        <img src="img/user.jpg" alt="Contact Person">
+                        <img src="{{ pHelper::baseUrl('/img/user.jpg') }}" alt="Contact Person">
                         {{ $names}}
                     </div>
                 </a>
             </li>
-	</ul>
+        </ul>
     </div>
-	<ul id="dp_user" class="dropdown-content">
+    <ul id="dp_user" class="dropdown-content">
         <li>
             <a href="#!">Mi Perfil</a>
         </li>
@@ -75,10 +75,10 @@
         @yield('content')
     </div>
 </div>
-<script src="js/libs/jquery/dist/jquery.min.js"></script>
-<script src="js/libs/materialize/dist/js/materialize.min.js"></script>
-<script src="js/libs/angular/angular.min.js"></script>
-<script src="js/app/app.js"></script>
+<script src="{{ pHelper::baseUrl('/js/libs/jquery/dist/jquery.min.js') }}"></script>
+<script src="{{ pHelper::baseUrl('/js/libs/materialize/dist/js/materialize.min.js') }}"></script>
+<script src="{{ pHelper::baseUrl('/js/libs/angular/angular.min.js') }}"></script>
+<script src="{{ pHelper::baseUrl('/js/app/app.js') }}"></script>
 @yield('scripts')
 </body>
 </html>

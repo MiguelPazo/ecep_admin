@@ -1,4 +1,4 @@
-<?php namespace Ale\Http\Middleware;
+<?php namespace Ecep\Http\Middleware;
 
 use Closure;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;

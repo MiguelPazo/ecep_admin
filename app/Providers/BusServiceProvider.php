@@ -1,4 +1,4 @@
-<?php namespace Ale\Providers;
+<?php namespace Ecep\Providers;
 
 use Illuminate\Bus\Dispatcher;
 use Illuminate\Support\ServiceProvider;
@@ -16,7 +16,7 @@ class BusServiceProvider extends ServiceProvider {
 		$dispatcher->mapUsing(function($command)
 		{
 			return Dispatcher::simpleMapping(
-				$command, 'Ale\Commands', 'Ale\Handlers\Commands'
+				$command, 'Ecep\Commands', 'Ecep\Handlers\Commands'
 			);
 		});
 	}
