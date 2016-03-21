@@ -9,8 +9,8 @@
     <title>ECEP</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-    <link rel="stylesheet" href="{{ asset('/js/libs/PACE/themes/green/pace-theme-loading-bar.css') }}"/>
-    <script src="{{ asset('/js/libs/PACE/pace.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ pHelper::baseUrl('/js/libs/PACE/themes/green/pace-theme-loading-bar.css') }}"/>
+    <script src="{{ pHelper::baseUrl('/js/libs/PACE/pace.min.js') }}"></script>
 
     <link type="text/css" rel="stylesheet" media="screen,projection"
           href="{{ pHelper::baseUrl('/js/libs/materialize/dist/css/materialize.min.css') }}">
