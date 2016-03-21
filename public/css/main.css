@@ -380,7 +380,9 @@ textarea {
 .modal .modal-footer a {
     margin-left: 15px !important;
 }
-
+#dp_user li a{
+	width: 100%;
+}
 @media (min-width: 960px) {
 
 }

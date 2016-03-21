@@ -12,6 +12,8 @@
     <link type="text/css" rel="stylesheet" media="screen,projection"
           href="js/libs/materialize/dist/css/materialize.min.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+	
+	<link rel="shortcut icon" href="img/icon.png'">
 </head>
 <body>
 <!--[if lt IE 9]>
@@ -48,7 +50,7 @@
         {{--</ul>--}}
         <ul class="list-unstyled nav-right">
             <li>
-                <a class="waves-effect btn btn-without-shadow btn-user">
+				<a data-activates="dp_user" class="dropdown-button waves-effect btn btn-without-shadow btn-user">
                     <div class="chip">
                         <img src="img/user.jpg" alt="Contact Person">
                         {{ $names}}
@@ -57,6 +59,15 @@
             </li>
 	</ul>
     </div>
+	<ul id="dp_user" class="dropdown-content">
+        <li>
+            <a href="#!">Mi Perfil</a>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <a href="#!">Salir</a>
+        </li>
+    </ul>
 </header>
 <div class="main-container">
     @yield('leftsidebar')
