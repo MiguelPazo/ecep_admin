@@ -7,7 +7,20 @@ class HelperApp
         if ($url != '') {
             $firstLetter = substr($url, 0, 1);
             $url = ($firstLetter == '/') ? substr($url, 1) : $url;
-            $finalUrl = env('BASE_URL') . $url;
+            $finalUrl = env('BASE_URL') . 'admin/' . $url;
+
+            return $finalUrl;
+        } else {
+            return env('BASE_URL');
+        }
+    }
+
+    public static function baseUrlReal($url = '')
+    {
+        if ($url != '') {
+            $firstLetter = substr($url, 0, 1);
+            $url = ($firstLetter == '/') ? substr($url, 1) : $url;
+            $finalUrl = env('BASE_URL')  . $url;
 
             return $finalUrl;
         } else {

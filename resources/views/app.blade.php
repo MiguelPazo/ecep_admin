@@ -51,7 +51,7 @@
         </li>
         <li class="divider"></li>
         <li>
-            <a href="https://pki.reniec.gob.pe/Shibboleth.sso/Logout?return=https://ecep.reniec.gob.pe/portal/">Salir</a>
+            <a href="{{ pHelper::baseUrlReal('/Shibboleth.sso/Logout?return=' . pHelper::baseUrlReal('/portal/')) }}">Salir</a>
         </li>
     </ul>
 </header>

@@ -16,14 +16,14 @@
                         <span class="card-title activator grey-text text-darken-4">
                             Monitoreo<i class="material-icons right">&#xE5D4;</i>
                         </span>
-                        <p><a href="https://ecep.reniec.gob.pe/dashboard/" target="_blank">Ver</a></p>
+                        <p><a href="{{ pHelper::baseUrlReal('/dashboard/') }}" target="_blank">Ver</a></p>
                     </div>
                     <div class="card-reveal">
                         <span class="card-title grey-text text-darken-4">
                             Monitoreo <i class="material-icons right">&#xE14C;</i>
                         </span>
                         <p>Monitoreo de la generación de Certificados Digitales.</p>
-                        <p><a href="https://ecep.reniec.gob.pe/dashboard/" target="_blank">Ver</a></p>
+                        <p><a href="{{ pHelper::baseUrlReal('/dashboard/') }}" target="_blank">Ver</a></p>
                     </div>
                 </div>
             </div>
