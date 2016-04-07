@@ -51,7 +51,7 @@
         </li>
         <li class="divider"></li>
         <li>
-            <a href="https://idp.reniec.gob.pe/idp/shibbolethLogout.jsp">Salir</a>
+            <a href="https://pki.reniec.gob.pe/Shibboleth.sso/Logout?return=https://ecep.reniec.gob.pe/portal/">Salir</a>
         </li>
     </ul>
 </header>
