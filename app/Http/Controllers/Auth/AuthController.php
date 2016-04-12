@@ -250,6 +250,6 @@ class AuthController extends Controller
     {
         Session::flush();
 
-        return redirect()->to('/');
+        return redirect(HelperApp::baseUrl('/'));
     }
 }
