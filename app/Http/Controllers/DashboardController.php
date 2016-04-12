@@ -8,26 +8,27 @@ use Illuminate\Http\Request;
 class DashboardController extends Controller
 {
 
-    public function getIndex()
+    public function getIndex(Request $request)
     {
 
-        $wData = array_key_exists('HTTP_RENIECSUBJECTDN', $_SERVER);
+//        dd($request->session()->all());
+//        $wData = array_key_exists('HTTP_RENIECSUBJECTDN', $_SERVER);
+//
+//        if ($wData) {
+//            $givename = 'GIVENNAME';
+//            $surname = 'SURNAME';
+//            $subject = $_SERVER['HTTP_RENIECSUBJECTDN'];
+//            $name = substr($subject, strpos($subject, $givename) + strlen($givename) + 1);
+//            $name = substr($name, 0, strpos($name, ','));
+//            $lastname = substr($subject, strpos($subject, $surname) + strlen($surname) + 1);
+//            $lastname = substr($lastname, 0, strpos($lastname, ','));
+//
+//        } else {
+//            $name = '------------';
+//        }
 
-        if ($wData) {
-            $givename = 'GIVENNAME';
-            $surname = 'SURNAME';
-            $subject = $_SERVER['HTTP_RENIECSUBJECTDN'];
-            $name = substr($subject, strpos($subject, $givename) + strlen($givename) + 1);
-            $name = substr($name, 0, strpos($name, ','));
-            $lastname = substr($subject, strpos($subject, $surname) + strlen($surname) + 1);
-            $lastname = substr($lastname, 0, strpos($lastname, ','));
 
-        } else {
-            $name = '------------';
-        }
-
-
-        return view('dashboard')->with('names', $name);
+        return view('dashboard')->with('names', '');
     }
 
     public function getPermission()

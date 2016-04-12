@@ -7,7 +7,7 @@ class HelperApp
         if ($url != '') {
             $firstLetter = substr($url, 0, 1);
             $url = ($firstLetter == '/') ? substr($url, 1) : $url;
-            $finalUrl = env('BASE_URL') . 'admin/' . $url;
+            $finalUrl = env('BASE_URL') . $url;
 
             return $finalUrl;
         } else {
@@ -20,7 +20,7 @@ class HelperApp
         if ($url != '') {
             $firstLetter = substr($url, 0, 1);
             $url = ($firstLetter == '/') ? substr($url, 1) : $url;
-            $finalUrl = env('BASE_URL')  . $url;
+            $finalUrl = env('BASE_URL') . $url;
 
             return $finalUrl;
         } else {

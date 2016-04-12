@@ -29,38 +29,9 @@
 <div class="progress hide">
     <div class="indeterminate green"></div>
 </div>
-<header class="z-depth-1">
-    <div class="logo teal">
-        <a href="#">ECEP</a>
-    </div>
-    <div class="nav-top">
-        <ul class="list-unstyled nav-right">
-            <li>
-                <a data-activates="dp_user" class="dropdown-button waves-effect btn btn-without-shadow btn-user">
-                    <div class="chip">
-                        <img src="{{ pHelper::baseUrl('/img/user.jpg') }}" alt="Contact Person">
-                        {{ $names}}
-                    </div>
-                </a>
-            </li>
-        </ul>
-    </div>
-    <ul id="dp_user" class="dropdown-content">
-        <li>
-            <a href="#!">Mi Perfil</a>
-        </li>
-        <li class="divider"></li>
-        <li>
-            <a href="{{ pHelper::baseUrlReal('/Shibboleth.sso/Logout?return=' . pHelper::baseUrlReal('/portal/')) }}">Salir</a>
-        </li>
-    </ul>
-</header>
-<div class="main-container">
-    @yield('leftsidebar')
-    <div class="content-container">
-        @yield('content')
-    </div>
-</div>
+
+@yield('content')
+
 <script src="{{ pHelper::baseUrl('/js/libs/jquery/dist/jquery.min.js') }}"></script>
 <script src="{{ pHelper::baseUrl('/js/libs/materialize/dist/js/materialize.min.js') }}"></script>
 <script src="{{ pHelper::baseUrl('/js/libs/angular/angular.min.js') }}"></script>

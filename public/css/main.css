@@ -87,6 +87,35 @@ textarea {
     z-index: 200;
 }
 
+.container-login a {
+    background: #ccc none no-repeat scroll 0 0;
+    border-radius: 5px;
+    color: #fff;
+    display: block;
+    margin: 10px 0;
+    padding: 10px 0 10px 45px;
+}
+
+.container-login .login-dnie {
+    background: #033051 url("../img/card.png") no-repeat scroll 89px 12px / auto 45%;
+}
+
+.container-login .login-google {
+    background: #dd4b39 url("../img/google.png") no-repeat scroll 86px 10px / auto 60%;
+}
+
+.container-login .login-facebook {
+    background: #3b5999 url("../img/facebook.png") no-repeat scroll 90px 10px / auto 55%;
+}
+
+.container-login .login-twitter {
+    background: #00aced url("../img/twitter.png") no-repeat scroll 85px 9px / auto 60%;
+}
+
+.container-login .login-linkedin {
+    background: #0a5287 url("../img/linkedin.png") no-repeat scroll 85px 9px / auto 55%;
+}
+
 .btn-without-shadow,
 .btn-without-shadow:hover {
     box-shadow: none;
