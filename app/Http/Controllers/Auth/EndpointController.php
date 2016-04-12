@@ -49,7 +49,6 @@ class EndpointController extends Controller
             'persistent_data_handler' => 'session'
         ]);
 
-
         $helper = $fb->getRedirectLoginHelper();
         $accessToken = $helper->getAccessToken();
         $oAuth2Client = $fb->getOAuth2Client();
@@ -136,5 +135,23 @@ class EndpointController extends Controller
         } else {
             echo 'error token';
         }
+    }
+
+    public function getDnieAuth()
+    {
+        $wData = array_key_exists('HTTP_RENIECSUBJECTDN', $_SERVER);
+        dd($wData);
+//        if ($wData) {
+//            $givename = 'GIVENNAME';
+//            $surname = 'SURNAME';
+//            $subject = $_SERVER['HTTP_RENIECSUBJECTDN'];
+//            $name = substr($subject, strpos($subject, $givename) + strlen($givename) + 1);
+//            $name = substr($name, 0, strpos($name, ','));
+//            $lastname = substr($subject, strpos($subject, $surname) + strlen($surname) + 1);
+//            $lastname = substr($lastname, 0, strpos($lastname, ','));
+//
+//        } else {
+//            $name = '------------';
+//        }
     }
 }

@@ -20,11 +20,11 @@ class HelperApp
         if ($url != '') {
             $firstLetter = substr($url, 0, 1);
             $url = ($firstLetter == '/') ? substr($url, 1) : $url;
-            $finalUrl = env('BASE_URL') . $url;
+            $finalUrl = env('REAL_URL') . $url;
 
             return $finalUrl;
         } else {
-            return env('BASE_URL');
+            return env('REAL_URL');
         }
     }
 }
