@@ -1,5 +1,6 @@
 <?php namespace Ecep\Http\Controllers\Auth;
 
+use Ecep\Helpers\HelperApp;
 use Ecep\Http\Controllers\Controller;
 use Facebook\Facebook;
 use GuzzleHttp\Client;
@@ -33,7 +34,7 @@ class AuthController extends Controller
         $goClient = new \Google_Client();
         $goClient->setAuthConfigFile(storage_path('app/google_client_secret.json'));
         $goClient->getHttpClient()->setDefaultOption('verify', false);
-        $goClient->setRedirectUri(url('/end-point/google-auth'));
+        $goClient->setRedirectUri(HelperApp::baseUrl('/end-point/google-auth'));
         $goClient->addScope(\Google_Service_People::USERINFO_EMAIL);
         $goClient->addScope(\Google_Service_People::USERINFO_PROFILE);
 
@@ -47,7 +48,7 @@ class AuthController extends Controller
             'persistent_data_handler' => 'session'
         ]);
         $permissions = ['email', 'user_birthday', 'user_about_me'];
-        $loginFacebook = $fb->getRedirectLoginHelper()->getLoginUrl(url('/end-point/facebook-auth'), $permissions);
+        $loginFacebook = $fb->getRedirectLoginHelper()->getLoginUrl(HelperApp::baseUrl('/end-point/facebook-auth'), $permissions);
 
         /////////////TWITTER///////////////
         $oAuth = new Oauth1([
@@ -64,7 +65,7 @@ class AuthController extends Controller
 
         $request = $client->post('https://api.twitter.com/oauth/request_token', [
             'body' => [
-                'oauth_callback' => url('/end-point/twitter-auth')
+                'oauth_callback' => HelperApp::baseUrl('/end-point/twitter-auth')
             ]
         ]);
 
@@ -82,7 +83,7 @@ class AuthController extends Controller
         $params = [
             'response_type' => 'code',
             'client_id' => '77tkvjzqxkk1w7',
-            'redirect_uri' => url('/end-point/linkedin-auth'),
+            'redirect_uri' => HelperApp::baseUrl('/end-point/linkedin-auth'),
             'state' => $stateLinkedin,
             'scope' => 'r_basicprofile,r_emailaddress'
         ];
@@ -228,7 +229,7 @@ class AuthController extends Controller
         $this->request->session()->put('names', $data['names']);
         $this->request->session()->put('image', $data['image']);
 
-        return url('/admin');
+        return HelperApp::baseUrl('/admin');
     }
 
     public function redirectPath()
@@ -237,7 +238,7 @@ class AuthController extends Controller
             return $this->redirectPath;
         }
 
-        return property_exists($this, 'redirectTo') ? $this->redirectTo : url('/admin');
+        return property_exists($this, 'redirectTo') ? $this->redirectTo : HelperApp::baseUrl('/admin');
     }
 
     public function loginPath()

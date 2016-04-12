@@ -23,7 +23,7 @@
             </li>
             <li class="divider"></li>
             <li>
-                <a href="{{ url('/auth/logout') }}">Salir</a>
+                <a href="{{ pHelper::baseUrl('/auth/logout') }}">Salir</a>
             </li>
         </ul>
     </header>
