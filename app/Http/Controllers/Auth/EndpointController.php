@@ -1,5 +1,6 @@
 <?php namespace Ecep\Http\Controllers\Auth;
 
+use Ecep\Helpers\HelperApp;
 use Ecep\Http\Controllers\Controller;
 use Facebook\Facebook;
 use GuzzleHttp\Client;
@@ -19,7 +20,7 @@ class EndpointController extends Controller
         if ($error != null) {
             return 'ocurrio un error!';
         } else if ($code == null) {
-            return redirect()->to('/');
+            return redirect(Helper::baseUrl('/'));
         }
     }
 
@@ -29,14 +30,14 @@ class EndpointController extends Controller
         $goClient = new \Google_Client();
         $goClient->setAuthConfigFile(storage_path('app/google_client_secret.json'));
         $goClient->getHttpClient()->setDefaultOption('verify', false);
-        $goClient->setRedirectUri(url('/end-point/google-auth'));
+        $goClient->setRedirectUri(Helper::baseUrl('/end-point/google-auth'));
         $goClient->addScope(\Google_Service_People::USERINFO_EMAIL);
         $goClient->addScope(\Google_Service_People::USERINFO_PROFILE);
 
         $goClient->authenticate($code);
         $this->request->session()->put('access_token', $goClient->getAccessToken());
 
-        return redirect()->to('/auth/google-login');
+        return redirect(Helper::baseUrl('/auth/google-login'));
     }
 
     public function getFacebookAuth()
@@ -63,7 +64,7 @@ class EndpointController extends Controller
 
         $this->request->session()->put('access_token', $accessToken);
 
-        return redirect()->to('/auth/facebook-login');
+        return redirect(Helper::baseUrl('/auth/facebook-login'));
     }
 
     public function getLinkedinAuth()
@@ -80,7 +81,7 @@ class EndpointController extends Controller
                 'body' => [
                     'grant_type' => 'authorization_code',
                     'code' => $code,
-                    'redirect_uri' => url('/end-point/linkedin-auth'),
+                    'redirect_uri' => Helper::baseUrl('/end-point/linkedin-auth'),
                     'client_id' => '77tkvjzqxkk1w7',
                     'client_secret' => 'eg9cZVD2csqqY02F'
                 ]
@@ -89,7 +90,7 @@ class EndpointController extends Controller
             $response = json_decode($request->getBody()->getContents());
             $this->request->session()->put('access_token', $response->access_token);
 
-            return redirect()->to('/auth/linkedin-login');
+            return redirect(Helper::baseUrl('/auth/linkedin-login'));
         } else {
             echo 'error state';
         }
@@ -131,7 +132,7 @@ class EndpointController extends Controller
             $this->request->session()->put('twitterUserId', $user_id);
             $this->request->session()->put('twitterScreenName', $screen_name);
 
-            return redirect()->to('/auth/twitter-login');
+            return redirect(Helper::baseUrl('/auth/twitter-login'));
         } else {
             echo 'error token';
         }
