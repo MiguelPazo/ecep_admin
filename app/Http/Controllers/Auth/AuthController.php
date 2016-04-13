@@ -221,6 +221,23 @@ class AuthController extends Controller
         return redirect($urlReturn);
     }
 
+    public function getDnieLogin()
+    {
+        $names = $this->request->session()->get('dni_name');
+        $lastnames = $this->request->session()->get('dni_lastname');
+
+
+        $data = [
+            'provider' => 'dnie',
+            'names' => $names,
+            'lastnames' => $lastnames,
+            'image' => 'http://www.hit4hit.org/img/login/user-icon-6.png'
+        ];
+
+        $urlReturn = $this->loginProvider($data);
+        return redirect($urlReturn);
+    }
+
     public function loginProvider($data)
     {
         Session::flush();

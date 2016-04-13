@@ -140,18 +140,23 @@ class EndpointController extends Controller
     public function getDnieAuth()
     {
         $wData = array_key_exists('HTTP_RENIECSUBJECTDN', $_SERVER);
-        dd($wData);
-//        if ($wData) {
-//            $givename = 'GIVENNAME';
-//            $surname = 'SURNAME';
-//            $subject = $_SERVER['HTTP_RENIECSUBJECTDN'];
-//            $name = substr($subject, strpos($subject, $givename) + strlen($givename) + 1);
-//            $name = substr($name, 0, strpos($name, ','));
-//            $lastname = substr($subject, strpos($subject, $surname) + strlen($surname) + 1);
-//            $lastname = substr($lastname, 0, strpos($lastname, ','));
-//
-//        } else {
-//            $name = '------------';
-//        }
+
+        if ($wData) {
+            $givename = 'GIVENNAME';
+            $surname = 'SURNAME';
+            $subject = $_SERVER['HTTP_RENIECSUBJECTDN'];
+            $name = substr($subject, strpos($subject, $givename) + strlen($givename) + 1);
+            $name = substr($name, 0, strpos($name, ','));
+            $lastname = substr($subject, strpos($subject, $surname) + strlen($surname) + 1);
+            $lastname = substr($lastname, 0, strpos($lastname, ','));
+
+            $this->request->session()->put('dni_name', $name);
+            $this->request->session()->put('dni_lastname', $lastname);
+
+            return redirect(HelperApp::baseUrl('/auth/dnie-login'));
+
+        } else {
+            echo 'NO HAY INFO DEL CERTIFICADO';
+        }
     }
 }
