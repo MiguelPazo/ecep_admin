@@ -1,6 +1,7 @@
 <?php namespace Ecep\Http\Middleware;
 
 use Closure;
+use Ecep\Helpers\HelperApp;
 use Illuminate\Contracts\Auth\Guard;
 
 class Authenticate
@@ -37,7 +38,7 @@ class Authenticate
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
-                return redirect()->guest('auth/login');
+                return redirect(HelperApp::baseUrl('auth/login'));
             }
         }
 
