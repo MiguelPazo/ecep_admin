@@ -41,14 +41,17 @@ class AuthController extends Controller
         $loginGoogle = $goClient->createAuthUrl();
 
         ////////////FACEBOOK//////////
-        $fb = new Facebook([
-            'app_id' => '202664960116201',
-            'app_secret' => 'f4fdc5856d06d146e19c81c572c737a6',
-            'default_graph_version' => 'v2.5',
-            'persistent_data_handler' => 'session'
-        ]);
-        $permissions = ['email', 'user_birthday', 'user_about_me'];
-        $loginFacebook = $fb->getRedirectLoginHelper()->getLoginUrl(HelperApp::baseUrl('/end-point/facebook-auth'), $permissions);
+        $stateFacebook = md5(time());
+        $params = [
+            'response_type' => 'code',
+            'client_id' => '202664960116201',
+            'redirect_uri' => HelperApp::baseUrl('/end-point/facebook-auth'),
+            'state' => $stateFacebook,
+            'scope' => 'email,user_birthday,user_about_me'
+        ];
+
+        $this->request->session()->put('stateFacebook', $stateFacebook);
+        $loginFacebook = 'https://www.facebook.com/dialog/oauth?' . http_build_query($params);
 
         /////////////TWITTER///////////////
         $oAuth = new Oauth1([
@@ -76,7 +79,6 @@ class AuthController extends Controller
         $this->request->session()->put('twitterAuthToken', $oauth_token);
 
         $loginTwitter = "https://api.twitter.com/oauth/authenticate?oauth_token=$oauth_token";
-//        $loginTwitter = "";
 
         ///////////LINKEDIN////////////////
         $stateLinkedin = md5(time());
@@ -140,7 +142,7 @@ class AuthController extends Controller
 
         $data = [
             'provider' => 'facebook',
-            'access_token' => $accessToken->getValue(),
+            'access_token' => $accessToken,
             'auth_id' => $user->getId(),
             'email' => $user->getEmail(),
             'names' => $user->getFirstName(),

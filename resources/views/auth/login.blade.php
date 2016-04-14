@@ -10,7 +10,7 @@
                 <a href="{{ $loginGoogle }}" class="login-google">Ingrese con Google</a>
                 <a href="{{ $loginTwitter }}" class="login-twitter">Ingrese con Twitter</a>
                 <a href="{{ $loginLinkedin }}" class="login-linkedin">Ingrese con LinkedIn</a>
-                <a href="#" class="login-facebook disabled">Ingrese con Facebook</a>
+                <a href="{{ $loginFacebook }}" class="login-facebook disabled">Ingrese con Facebook</a>
             </div>
         </div>
     </div>

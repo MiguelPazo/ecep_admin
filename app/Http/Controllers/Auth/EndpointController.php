@@ -42,28 +42,30 @@ class EndpointController extends Controller
 
     public function getFacebookAuth()
     {
-        $fb = new Facebook([
-            'app_id' => '202664960116201',
-            'app_secret' => 'f4fdc5856d06d146e19c81c572c737a6',
-            'default_graph_version' => 'v2.5',
-            'persistent_data_handler' => 'session'
-        ]);
+        $stateFacebook = $this->request->session()->get('stateFacebook');
+        $code = $this->request->get('code');
+        $state = $this->request->get('state');
 
-        $helper = $fb->getRedirectLoginHelper();
-        $accessToken = $helper->getAccessToken();
-        $oAuth2Client = $fb->getOAuth2Client();
-        $tokenMetadata = $oAuth2Client->debugToken($accessToken);
+        if ($stateFacebook == $state) {
+            $client = new Client();
+            $client->setDefaultOption('verify', false);
 
-        $tokenMetadata->validateAppId('202664960116201');
-        $tokenMetadata->validateExpiration();
+            $request = $client->post('https://graph.facebook.com/v2.3/oauth/access_token', [
+                'body' => [
+                    'client_id' => '202664960116201',
+                    'redirect_uri' => HelperApp::baseUrl('/end-point/facebook-auth'),
+                    'client_secret' => 'f4fdc5856d06d146e19c81c572c737a6',
+                    'code' => $code
+                ]
+            ]);
 
-        if (!$accessToken->isLongLived()) {
-            $accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
+            $response = json_decode($request->getBody()->getContents());
+            $this->request->session()->put('access_token', $response->access_token);
+
+            return redirect(HelperApp::baseUrl('/auth/facebook-login'));
+        } else {
+            echo 'error state';
         }
-
-        $this->request->session()->put('access_token', $accessToken);
-
-        return redirect(HelperApp::baseUrl('/auth/facebook-login'));
     }
 
     public function getLinkedinAuth()
