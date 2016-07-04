@@ -195,7 +195,6 @@ class AuthController extends Controller
     public function getLinkedinLogin()
     {
         $accessToken = $this->request->session()->get('access_token');
-
         $client = new Client();
         $client->setDefaultOption('verify', false);
 
