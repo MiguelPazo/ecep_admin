@@ -35,11 +35,13 @@ class AuthController extends Controller
         $stateGemalto = md5(time());
         $params = [
             'response_type' => 'code',
-            'client_id' => 'IDP-OAF001-3216091473860993997',
+            'client_id' => 'pendiente',
             'redirect_uri' => HelperApp::baseUrl('/end-point/gemalto-auth'),
             'state' => $stateGemalto,
             'scope' => 'openid'
         ];
+
+        $this->request->session()->put('stateGemalto', $stateGemalto);
         $loginGemalto = 'https://idp.reniec.gemalto.com/idp/frontcontroller/openidconnect/authorize?' . http_build_query($params);
 
         ////////////GOOGLE//////////
@@ -221,9 +223,9 @@ class AuthController extends Controller
         ];
 
         $stringInfo = 'id,first-name,last-name,picture-url,email-address';
-        $request = $client->get("https://api.linkedin.com/v1/people/~:($stringInfo)?" . http_build_query($data));
 
-        $response = json_decode($request->getBody()->getContents());
+        $request = $client->createRequest('GET', "https://api.linkedin.com/v1/people/~:($stringInfo)?" . http_build_query($data), []);
+        $response = json_decode($client->send($request)->getBody()->getContents());
 
         $data = [
             'provider' => 'linkedin',
@@ -233,6 +235,36 @@ class AuthController extends Controller
             'names' => $response->firstName,
             'lastnames' => $response->lastName,
             'image' => $response->pictureUrl
+        ];
+
+        $urlReturn = $this->loginProvider($data);
+        return redirect($urlReturn);
+    }
+
+    public function getGemaltoLogin()
+    {
+        $accessToken = $this->request->session()->get('access_token', 'holamiundo');
+        $client = new Client();
+        $client->setDefaultOption('verify', false);
+
+        $params = ['scope' => 'openid'];
+        $userInfo = 'https://idp.reniec.gemalto.com/idp/frontcontroller/openidconnect/userinfo';
+
+        $request = $client->createRequest('GET', "$userInfo?" . http_build_query($params), [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $accessToken
+            ]
+        ]);
+        $response = json_decode($client->send($request)->getBody()->getContents());
+
+        $data = [
+            'provider' => 'gemalto',
+            'access_token' => $accessToken,
+            'auth_id' => $response->id,
+            'email' => $response->email,
+            'names' => $response->given_name,
+            'lastnames' => $response->family_name,
+            'image' => $response->gender
         ];
 
         $urlReturn = $this->loginProvider($data);

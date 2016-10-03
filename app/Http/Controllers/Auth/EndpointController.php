@@ -161,4 +161,33 @@ class EndpointController extends Controller
             echo 'NO HAY INFO DEL CERTIFICADO';
         }
     }
+
+    public function getGemaltoAuth()
+    {
+        $stateGemalto = $this->request->session()->get('stateGemalto');
+        $code = $this->request->get('code');
+        $state = $this->request->get('state');
+
+        if ($stateGemalto == $state) {
+            $client = new Client();
+            $client->setDefaultOption('verify', false);
+
+            $request = $client->post('https://idp.reniec.gemalto.com/idp/frontcontroller/openidconnect/token', [
+                'body' => [
+                    'grant_type' => 'authorization_code',
+                    'code' => $code,
+                    'redirect_uri' => HelperApp::baseUrl('/end-point/gemalto-auth'),
+                    'client_id' => 'pendiente',
+                    'client_secret' => 'pendiente'
+                ]
+            ]);
+
+            $response = json_decode($request->getBody()->getContents());
+            $this->request->session()->put('access_token', $response->access_token);
+
+            return redirect(HelperApp::baseUrl('/auth/gemalto-login'));
+        } else {
+            echo 'error state';
+        }
+    }
 }
