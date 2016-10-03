@@ -96,6 +96,12 @@ textarea {
     padding: 10px 0 10px 45px;
 }
 
+.container-login .login-gemalto {
+    background: #fff url("../img/gemalto.jpg") no-repeat scroll 79px 3px / auto 68%;
+    border: 1px solid #000;
+    color: #000;
+}
+
 .container-login .login-dnie {
     background: #033051 url("../img/card.png") no-repeat scroll 89px 12px / auto 45%;
 }

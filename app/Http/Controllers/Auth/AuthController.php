@@ -9,6 +9,7 @@ use Illuminate\Auth\GenericUser;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Symfony\Component\Debug\Exception\FatalErrorException;
 
 class AuthController extends Controller
 {
@@ -30,6 +31,17 @@ class AuthController extends Controller
 
     public function getLogin()
     {
+        ////////////GEMALTO//////////
+        $stateGemalto = md5(time());
+        $params = [
+            'response_type' => 'code',
+            'client_id' => 'IDP-OAF001-3216091473860993997',
+            'redirect_uri' => HelperApp::baseUrl('/end-point/gemalto-auth'),
+            'state' => $stateGemalto,
+            'scope' => 'openid'
+        ];
+        $loginGemalto = 'https://idp.reniec.gemalto.com/idp/frontcontroller/openidconnect/authorize?' . http_build_query($params);
+
         ////////////GOOGLE//////////
         $goClient = new \Google_Client();
         $goClient->setAuthConfigFile(storage_path('app/google_client_secret.json'));
@@ -54,31 +66,35 @@ class AuthController extends Controller
         $loginFacebook = 'https://www.facebook.com/dialog/oauth?' . http_build_query($params);
 
         /////////////TWITTER///////////////
-        $oAuth = new Oauth1([
-            'consumer_key' => 'neRP7ZdxStCIZ0mjYe2Mjqzr4',
-            'consumer_secret' => 'wstPlcQkKh0ZelXoLnswdqtLhBhHAiEcn28X2ghaxDsBBN3enz',
-            'token' => '490488989-FL3agfPdi3mQCscdqoGVSnNTovWGhdox2LYzD9Sa',
-            'token_secret' => 'DuqeS1Byrwdk5bue3n8eq0LpRCDZNuWbFtzsB8HBRVziQ'
-        ]);
+        $loginTwitter = '#';
 
-        $client = new Client();
-        $client->setDefaultOption('verify', false);
-        $client->setDefaultOption('auth', 'oauth');
-        $client->getEmitter()->attach($oAuth);
+        try {
+            $oAuth = new Oauth1([
+                'consumer_key' => 'neRP7ZdxStCIZ0mjYe2Mjqzr4',
+                'consumer_secret' => 'wstPlcQkKh0ZelXoLnswdqtLhBhHAiEcn28X2ghaxDsBBN3enz',
+                'token' => '490488989-FL3agfPdi3mQCscdqoGVSnNTovWGhdox2LYzD9Sa',
+                'token_secret' => 'DuqeS1Byrwdk5bue3n8eq0LpRCDZNuWbFtzsB8HBRVziQ'
+            ]);
 
-        $request = $client->post('https://api.twitter.com/oauth/request_token', [
-            'body' => [
-                'oauth_callback' => HelperApp::baseUrl('/end-point/twitter-auth')
-            ]
-        ]);
+            $client = new Client();
+            $client->setDefaultOption('verify', false);
+            $client->setDefaultOption('auth', 'oauth');
+            $client->getEmitter()->attach($oAuth);
 
-        $oauth_token = null;
-        $response = $request->getBody()->getContents();
-        parse_str($response);
+            $request = $client->post('https://api.twitter.com/oauth/request_token', [
+                'body' => [
+                    'oauth_callback' => HelperApp::baseUrl('/end-point/twitter-auth')
+                ]
+            ]);
 
-        $this->request->session()->put('twitterAuthToken', $oauth_token);
-
-        $loginTwitter = "https://api.twitter.com/oauth/authenticate?oauth_token=$oauth_token";
+            $oauth_token = null;
+            $response = $request->getBody()->getContents();
+            parse_str($response);
+            $this->request->session()->put('twitterAuthToken', $oauth_token);
+            $loginTwitter = "https://api.twitter.com/oauth/authenticate?oauth_token=$oauth_token";
+        } catch (\Exception $ex) {
+            Log::error($ex->getMessage() . "\n" . $ex->getTraceAsString());
+        }
 
         ///////////LINKEDIN////////////////
         $stateLinkedin = md5(time());
@@ -94,6 +110,7 @@ class AuthController extends Controller
         $loginLinkedin = 'https://www.linkedin.com/uas/oauth2/authorization?' . http_build_query($params);
 
         return view('auth.login')
+            ->with('loginGemalto', $loginGemalto)
             ->with('loginTwitter', $loginTwitter)
             ->with('loginLinkedin', $loginLinkedin)
             ->with('loginFacebook', $loginFacebook)
