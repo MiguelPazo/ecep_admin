@@ -35,7 +35,7 @@ class AuthController extends Controller
         $stateGemalto = md5(time());
         $params = [
             'response_type' => 'code',
-            'client_id' => 'pendiente',
+            'client_id' => 'ecep_admin',
             'redirect_uri' => HelperApp::baseUrl('/end-point/gemalto-auth'),
             'state' => $stateGemalto,
             'scope' => 'openid'
@@ -243,28 +243,36 @@ class AuthController extends Controller
 
     public function getGemaltoLogin()
     {
-        $accessToken = $this->request->session()->get('access_token', 'holamiundo');
+        $accessToken = $this->request->session()->get('access_token');
+        $refreshToken = $this->request->session()->get('refresh_token');
+        $idToken = $this->request->session()->get('id_token');
+
         $client = new Client();
         $client->setDefaultOption('verify', false);
 
-        $params = ['scope' => 'openid'];
-        $userInfo = 'https://idp.reniec.gemalto.com/idp/frontcontroller/openidconnect/userinfo';
+        $uInfoEndpoint = 'https://idp.reniec.gemalto.com/idp/frontcontroller/openidconnect/userinfo';
 
-        $request = $client->createRequest('GET', "$userInfo?" . http_build_query($params), [
+        $request = $client->createRequest('GET', $uInfoEndpoint, [
             'headers' => [
                 'Authorization' => 'Bearer ' . $accessToken
             ]
         ]);
-        $response = json_decode($client->send($request)->getBody()->getContents());
+        $response = json_decode($client->send($request)->getBody()->getContents(), true);
 
         $data = [
             'provider' => 'gemalto',
             'access_token' => $accessToken,
-            'auth_id' => $response->id,
-            'email' => $response->email,
-            'names' => $response->given_name,
-            'lastnames' => $response->family_name,
-            'image' => $response->gender
+            'auth_id' => $response['sub'],
+            'names' => array_key_exists('given_name', $response) ? $response['given_name'] : null,
+            'lastnames' => array_key_exists('family_name', $response) ? $response['family_name'] : null,
+            'birthdate' => array_key_exists('birthdate', $response) ? $response['birthdate'] : null,
+            'gender' => array_key_exists('gender', $response) ? $response['gender'] : null,
+            'country' => array_key_exists('country', $response) ? $response['country'] : null,
+            'state' => array_key_exists('state', $response) ? $response['state'] : null,
+            'city' => array_key_exists('city', $response) ? $response['city'] : null,
+            'street' => array_key_exists('street', $response) ? $response['street'] : null,
+            'email' => array_key_exists('email', $response) ? $response['email'] : null,
+            'image' => null
         ];
 
         $urlReturn = $this->loginProvider($data);
@@ -295,6 +303,7 @@ class AuthController extends Controller
         $this->request->session()->put('user', true);
         $this->request->session()->put('names', $data['names']);
         $this->request->session()->put('image', $data['image']);
+        $this->request->session()->put('data', json_encode($data));
 
         return HelperApp::baseUrl('/admin');
     }

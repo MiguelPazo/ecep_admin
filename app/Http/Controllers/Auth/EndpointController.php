@@ -171,22 +171,31 @@ class EndpointController extends Controller
         if ($stateGemalto == $state) {
             $client = new Client();
             $client->setDefaultOption('verify', false);
+            $tokenEndpoint = 'https://idp.reniec.gemalto.com/idp/frontcontroller/openidconnect/token';
 
-            $request = $client->post('https://idp.reniec.gemalto.com/idp/frontcontroller/openidconnect/token', [
+            $request = $client->createRequest('POST', $tokenEndpoint, [
+                'auth' => [
+                    'ecep_admin',
+                    '12345678'
+                ],
                 'body' => [
                     'grant_type' => 'authorization_code',
                     'code' => $code,
                     'redirect_uri' => HelperApp::baseUrl('/end-point/gemalto-auth'),
-                    'client_id' => 'pendiente',
-                    'client_secret' => 'pendiente'
+                    'client_id' => 'ecep_admin'
                 ]
             ]);
 
-            $response = json_decode($request->getBody()->getContents());
+            $response = json_decode($client->send($request)->getBody()->getContents());
+
             $this->request->session()->put('access_token', $response->access_token);
+            $this->request->session()->put('refresh_token', $response->refresh_token);
+            $this->request->session()->put('id_token', $response->id_token);
 
             return redirect(HelperApp::baseUrl('/auth/gemalto-login'));
         } else {
+            Log::error('State esperado: ' . $stateGemalto);
+            Log::error('State recivido: ' . $state);
             echo 'error state';
         }
     }

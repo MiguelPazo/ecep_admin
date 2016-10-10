@@ -13,6 +13,11 @@ class DashboardController extends Controller
         return view('dashboard');
     }
 
+    public function getInfo()
+    {
+        return view('info');
+    }
+
     public function getPermission()
     {
         return view('permission');
