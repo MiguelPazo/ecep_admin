@@ -8,7 +8,7 @@
 
                 <p>Ingrese con cualquiera de las siguientes opciones:</p>
                 <a href="{{ pHelper::baseUrlReal('/dnie/') }}" class="login-dnie">Ingrese con DNIe</a>
-                <a href="{{ $loginGemalto }}" class="login-gemalto">Ingrese con Gemalto (OP)</a>
+                <a href="{{ $loginGemalto }}" class="login-gemalto">Ingrese con Proveedor (OP)</a>
                 <a href="{{ $loginGoogle }}" class="login-google">Ingrese con Google</a>
                 <a href="{{ $loginTwitter }}" class="login-twitter">Ingrese con Twitter</a>
                 <a href="{{ $loginLinkedin }}" class="login-linkedin">Ingrese con LinkedIn</a>
