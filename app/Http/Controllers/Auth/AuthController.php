@@ -44,6 +44,21 @@ class AuthController extends Controller
         $this->request->session()->put('stateGemalto', $stateGemalto);
         $loginGemalto = 'https://idp.reniec.gemalto.com/idp/frontcontroller/openidconnect/authorize?' . http_build_query($params);
 
+        /////////SAFE LAYER//////////
+        $stateSafelayer = md5(time());
+
+        $params = [
+            'response_type' => 'code',
+            'client_id' => '1980955644384241',
+            'redirect_uri' => HelperApp::baseUrl('/end-point/safe-layer'),
+            'acr_values' => 'urn:safelayer:tws:policies:authentication:flow:mobileid:crossdevice',
+            'state' => $stateSafelayer,
+            'scope' => 'urn:safelayer:eidas:full_identity urn:safelayer:eidas:authn_details'
+        ];
+
+        $this->request->session()->put('stateSafelayer', $stateSafelayer);
+        $loginSafelayer = 'https://trustedx-sfly01.safelayer.com/trustedx-authserver/eidas-provider/oauth?' . http_build_query($params);
+
         ////////////GOOGLE//////////
         $goClient = new \Google_Client();
         $goClient->setAuthConfigFile(storage_path('app/google_client_secret.json'));
@@ -113,6 +128,7 @@ class AuthController extends Controller
 
         return view('auth.login')
             ->with('loginGemalto', $loginGemalto)
+            ->with('loginSafelayer', $loginSafelayer)
             ->with('loginTwitter', $loginTwitter)
             ->with('loginLinkedin', $loginLinkedin)
             ->with('loginFacebook', $loginFacebook)
@@ -279,6 +295,39 @@ class AuthController extends Controller
         return redirect($urlReturn);
     }
 
+    public function getSafelayerLogin()
+    {
+        $accessToken = $this->request->session()->get('access_token');
+
+        $client = new Client();
+        $client->setDefaultOption('verify', false);
+
+        $uInfoEndpoint = 'https://trustedx-sfly01.safelayer.com/trustedx-resources/openid/v1/users/me';
+
+        $request = $client->createRequest('GET', $uInfoEndpoint, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $accessToken
+            ]
+        ]);
+
+        $response = json_decode($client->send($request)->getBody()->getContents(), true);
+        $idpLogOut = 'https://trustedx-sfly01.safelayer.com/trustedx-authserver/eidas-provider/logout?redirect_uri=' . HelperApp::baseUrl('/end-point/safe-layer');
+
+        $data = [
+            'provider' => 'safelayer',
+            'access_token' => $accessToken,
+            'auth_id' => $response['sub'],
+            'names' => array_key_exists('first_name', $response) ? $response['first_name'] : null,
+            'lastnames' => array_key_exists('last_name', $response) ? $response['last_name'] : null,
+            'country' => array_key_exists('authn_details', $response) ? $response['authn_details']['locationCountryName'] : null,
+            'city' => array_key_exists('authn_details', $response) ? $response['authn_details']['locationTimezone'] : null,
+            'email' => array_key_exists('email', $response) ? $response['email'] : null,
+        ];
+
+        $urlReturn = $this->loginProvider($data, $idpLogOut);
+        return redirect($urlReturn);
+    }
+
     public function getDnieLogin()
     {
         $names = $this->request->session()->get('dni_name');
@@ -296,14 +345,18 @@ class AuthController extends Controller
         return redirect($urlReturn);
     }
 
-    public function loginProvider($data)
+    public function loginProvider($data, $idpLogOut = null)
     {
         Session::flush();
 
         $this->request->session()->put('user', true);
         $this->request->session()->put('names', $data['names']);
-        $this->request->session()->put('image', $data['image']);
+        $this->request->session()->put('image', array_key_exists('image', $data) ? $data['image'] : HelperApp::baseUrl('/img/user.jpg'));
         $this->request->session()->put('data', json_encode($data));
+
+        if ($idpLogOut) {
+            $this->request->session()->put('idpLogout', $idpLogOut);
+        }
 
         return HelperApp::baseUrl('/admin');
     }
@@ -324,8 +377,14 @@ class AuthController extends Controller
 
     public function getLogout()
     {
+        $idpLogout = $this->request->session()->pull('idpLogout');
+
         Session::flush();
 
-        return redirect(HelperApp::baseUrl('/'));
+        if ($idpLogout) {
+            return redirect()->to($idpLogout);
+        } else {
+            return redirect()->to(HelperApp::baseUrl('/'));
+        }
     }
 }

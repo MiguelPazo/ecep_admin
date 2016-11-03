@@ -102,6 +102,11 @@ textarea {
     color: #000;
 }
 
+.container-login .login-safelayer {
+    background: #c80000 url("../img/safelayer.png") no-repeat local 22px 6px / auto 68%;
+    color: #fff;
+}
+
 .container-login .login-dnie {
     background: #033051 url("../img/card.png") no-repeat scroll 89px 12px / auto 45%;
 }

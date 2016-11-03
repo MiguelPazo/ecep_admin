@@ -5,6 +5,7 @@ use Ecep\Http\Controllers\Controller;
 use GuzzleHttp\Client;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class EndpointController extends Controller
 {
@@ -215,4 +216,44 @@ class EndpointController extends Controller
             return redirect()->to(HelperApp::baseUrl('/'));
         }
     }
+
+    public function getSafeLayer()
+    {
+        if (!$this->error) {
+            $stateGemalto = $this->request->session()->get('stateSafelayer');
+            $code = $this->request->get('code');
+            $state = $this->request->get('state');
+
+            if ($state && $stateGemalto == $state) {
+                $client = new Client();
+                $client->setDefaultOption('verify', false);
+                $tokenEndpoint = 'https://trustedx-sfly01.safelayer.com/trustedx-authserver/oauth/eidas-provider/token';
+
+                $request = $client->createRequest('POST', $tokenEndpoint, [
+                    'auth' => [
+                        '1980955644384241',
+                        'd37eb21c07172ee0634e69555e641b212'
+                    ],
+                    'body' => [
+                        'grant_type' => 'authorization_code',
+                        'code' => $code,
+                        'redirect_uri' => HelperApp::baseUrl('/end-point/safe-layer')
+                    ]
+                ]);
+
+                $response = json_decode($client->send($request)->getBody()->getContents());
+
+                $this->request->session()->put('access_token', $response->access_token);
+
+                return redirect(HelperApp::baseUrl('/auth/safelayer-login'));
+            } else {
+                Log::error('State esperado: ' . $stateGemalto);
+                Log::error('State recivido: ' . $state);
+                return redirect()->to(HelperApp::baseUrl('/'));
+            }
+        } else {
+            return redirect()->to(HelperApp::baseUrl('/'));
+        }
+    }
+
 }
