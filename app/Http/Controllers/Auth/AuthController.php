@@ -31,7 +31,7 @@ class AuthController extends Controller
 
     public function getLogin()
     {
-        ////////////GEMALTO//////////
+        ////////////GEMALTO CF//////////
         $stateGemalto = md5(time());
         $params = [
             'response_type' => 'code',
@@ -44,7 +44,7 @@ class AuthController extends Controller
         $this->request->session()->put('stateGemalto', $stateGemalto);
         $loginGemalto = 'https://idp.reniec.gemalto.com/idp/frontcontroller/openidconnect/authorize?' . http_build_query($params);
 
-        /////////SAFE LAYER//////////
+        /////////SAFE LAYER MOBILE ID//////////
         $stateSafelayer = md5(time());
 
         $params = [
@@ -58,6 +58,21 @@ class AuthController extends Controller
 
         $this->request->session()->put('stateSafelayer', $stateSafelayer);
         $loginSafelayer = 'https://trustedx-sfly01.safelayer.com/trustedx-authserver/eidas-provider/oauth?' . http_build_query($params);
+
+        /////////SAFE LAYER USER/PASSWORD//////////
+        $stateSafelayerPass = md5(time());
+
+        $params = [
+            'response_type' => 'code',
+            'client_id' => '1980955644384241',
+            'redirect_uri' => HelperApp::baseUrl('/end-point/safe-layer'),
+            'acr_values' => 'urn:safelayer:tws:policies:authentication:flow:basic:password',
+            'state' => $stateSafelayerPass,
+            'scope' => 'urn:safelayer:eidas:full_identity urn:safelayer:eidas:authn_details'
+        ];
+
+        $this->request->session()->put('stateSafelayer', $stateSafelayerPass);
+        $loginSafelayerPass = 'https://trustedx-sfly01.safelayer.com/trustedx-authserver/eidas-provider/oauth?' . http_build_query($params);
 
         ////////////GOOGLE//////////
         $goClient = new \Google_Client();
@@ -129,132 +144,11 @@ class AuthController extends Controller
         return view('auth.login')
             ->with('loginGemalto', $loginGemalto)
             ->with('loginSafelayer', $loginSafelayer)
+            ->with('loginSafelayerPass', $loginSafelayerPass)
             ->with('loginTwitter', $loginTwitter)
             ->with('loginLinkedin', $loginLinkedin)
             ->with('loginFacebook', $loginFacebook)
             ->with('loginGoogle', $loginGoogle);
-    }
-
-    public function getGoogleLogin()
-    {
-        $accesToken = $this->request->session()->get('access_token');
-
-        $goClient = new \Google_Client();
-        $goClient->getHttpClient()->setDefaultOption('verify', false);
-        $goClient->setAuthConfigFile(storage_path('app/google_client_secret.json'));
-        $goClient->setAccessType('Bearer');
-        $goClient->setAccessToken($accesToken);
-
-        $goPlus = new \Google_Service_Plus($goClient);
-
-        $data = [
-            'provider' => 'google',
-            'access_token' => $accesToken['access_token'],
-            'auth_id' => $goPlus->people->get('me')->getId(),
-            'email' => $goPlus->people->get('me')->getEmails()[0]->value,
-            'names' => $goPlus->people->get('me')->getName()->givenName,
-            'lastnames' => $goPlus->people->get('me')->getName()->familyName,
-            'image' => $goPlus->people->get('me')->getImage()->url
-        ];
-
-        $urlReturn = $this->loginProvider($data);
-        return redirect($urlReturn);
-    }
-
-    public function getFacebookLogin()
-    {
-        $accessToken = $this->request->session()->get('access_token');
-
-        $fb = new Facebook([
-            'app_id' => '202664960116201',
-            'app_secret' => 'f4fdc5856d06d146e19c81c572c737a6',
-            'default_graph_version' => 'v2.5',
-            'persistent_data_handler' => 'session'
-        ]);
-
-        $response = $fb->get('/me?fields=id,first_name,last_name,email,gender,birthday,locale,timezone,picture', $accessToken);
-        $user = $response->getGraphUser();
-
-        $data = [
-            'provider' => 'facebook',
-            'access_token' => $accessToken,
-            'auth_id' => $user->getId(),
-            'email' => $user->getEmail(),
-            'names' => $user->getFirstName(),
-            'lastnames' => $user->getLastName(),
-            'image' => $user->getPicture()->getUrl()
-        ];
-
-        $urlReturn = $this->loginProvider($data);
-        return redirect($urlReturn);
-    }
-
-    public function getTwitterLogin()
-    {
-        $key = $this->request->session()->get('twitterToken');
-        $keySecret = $this->request->session()->get('twitterTokenSecret');
-        $userId = $this->request->session()->get('twitterUserId');
-
-        $oAuth = new Oauth1([
-            'consumer_key' => 'neRP7ZdxStCIZ0mjYe2Mjqzr4',
-            'consumer_secret' => 'wstPlcQkKh0ZelXoLnswdqtLhBhHAiEcn28X2ghaxDsBBN3enz',
-            'token' => $key,
-            'token_secret' => $keySecret
-        ]);
-
-        $client = new Client();
-        $client->setDefaultOption('verify', false);
-        $client->setDefaultOption('auth', 'oauth');
-        $client->getEmitter()->attach($oAuth);
-
-        $request = $client->get('https://api.twitter.com/1.1/users/show.json', [
-            'query' => [
-                'id' => $userId,
-                'include_entities' => true
-            ]
-        ])->json();
-
-        $data = [
-            'provider' => 'twitter',
-            'token' => $key,
-            'token_secret' => $keySecret,
-            'auth_id' => $userId,
-            'names' => $request['name'],
-            'image' => $request['profile_image_url_https']
-        ];
-
-        $urlReturn = $this->loginProvider($data);
-        return redirect($urlReturn);
-    }
-
-    public function getLinkedinLogin()
-    {
-        $accessToken = $this->request->session()->get('access_token');
-        $client = new Client();
-        $client->setDefaultOption('verify', false);
-
-        $data = [
-            'oauth2_access_token' => $accessToken,
-            'format' => 'json'
-        ];
-
-        $stringInfo = 'id,first-name,last-name,picture-url,email-address';
-
-        $request = $client->createRequest('GET', "https://api.linkedin.com/v1/people/~:($stringInfo)?" . http_build_query($data), []);
-        $response = json_decode($client->send($request)->getBody()->getContents());
-
-        $data = [
-            'provider' => 'linkedin',
-            'access_token' => $accessToken,
-            'auth_id' => $response->id,
-            'email' => $response->emailAddress,
-            'names' => $response->firstName,
-            'lastnames' => $response->lastName,
-            'image' => $response->pictureUrl
-        ];
-
-        $urlReturn = $this->loginProvider($data);
-        return redirect($urlReturn);
     }
 
     public function getGemaltoLogin()
@@ -288,7 +182,8 @@ class AuthController extends Controller
             'city' => array_key_exists('city', $response) ? $response['city'] : null,
             'street' => array_key_exists('street', $response) ? $response['street'] : null,
             'email' => array_key_exists('email', $response) ? $response['email'] : null,
-            'image' => null
+            'image' => null,
+            'all' => $response
         ];
 
         $urlReturn = $this->loginProvider($data);
@@ -322,23 +217,133 @@ class AuthController extends Controller
             'country' => array_key_exists('authn_details', $response) ? $response['authn_details']['locationCountryName'] : null,
             'city' => array_key_exists('authn_details', $response) ? $response['authn_details']['locationTimezone'] : null,
             'email' => array_key_exists('email', $response) ? $response['email'] : null,
+            'all' => $response
         ];
 
         $urlReturn = $this->loginProvider($data, $idpLogOut);
         return redirect($urlReturn);
     }
 
-    public function getDnieLogin()
+    public function getGoogleLogin()
     {
-        $names = $this->request->session()->get('dni_name');
-        $lastnames = $this->request->session()->get('dni_lastname');
+        $accesToken = $this->request->session()->get('access_token');
 
+        $goClient = new \Google_Client();
+        $goClient->getHttpClient()->setDefaultOption('verify', false);
+        $goClient->setAuthConfigFile(storage_path('app/google_client_secret.json'));
+        $goClient->setAccessType('Bearer');
+        $goClient->setAccessToken($accesToken);
+
+        $goPlus = new \Google_Service_Plus($goClient);
 
         $data = [
-            'provider' => 'dnie',
-            'names' => $names,
-            'lastnames' => $lastnames,
-            'image' => 'http://www.hit4hit.org/img/login/user-icon-6.png'
+            'provider' => 'google',
+            'access_token' => $accesToken['access_token'],
+            'auth_id' => $goPlus->people->get('me')->getId(),
+            'email' => $goPlus->people->get('me')->getEmails()[0]->value,
+            'names' => $goPlus->people->get('me')->getName()->givenName,
+            'lastnames' => $goPlus->people->get('me')->getName()->familyName,
+            'image' => $goPlus->people->get('me')->getImage()->url,
+            'all' => null
+        ];
+
+        $urlReturn = $this->loginProvider($data);
+        return redirect($urlReturn);
+    }
+
+    public function getFacebookLogin()
+    {
+        $accessToken = $this->request->session()->get('access_token');
+
+        $fb = new Facebook([
+            'app_id' => '202664960116201',
+            'app_secret' => 'f4fdc5856d06d146e19c81c572c737a6',
+            'default_graph_version' => 'v2.5',
+            'persistent_data_handler' => 'session'
+        ]);
+
+        $response = $fb->get('/me?fields=id,first_name,last_name,email,gender,birthday,locale,timezone,picture', $accessToken);
+        $user = $response->getGraphUser();
+
+        $data = [
+            'provider' => 'facebook',
+            'access_token' => $accessToken,
+            'auth_id' => $user->getId(),
+            'email' => $user->getEmail(),
+            'names' => $user->getFirstName(),
+            'lastnames' => $user->getLastName(),
+            'image' => $user->getPicture()->getUrl(),
+            'all' => null
+        ];
+
+        $urlReturn = $this->loginProvider($data);
+        return redirect($urlReturn);
+    }
+
+    public function getTwitterLogin()
+    {
+        $key = $this->request->session()->get('twitterToken');
+        $keySecret = $this->request->session()->get('twitterTokenSecret');
+        $userId = $this->request->session()->get('twitterUserId');
+
+        $oAuth = new Oauth1([
+            'consumer_key' => 'neRP7ZdxStCIZ0mjYe2Mjqzr4',
+            'consumer_secret' => 'wstPlcQkKh0ZelXoLnswdqtLhBhHAiEcn28X2ghaxDsBBN3enz',
+            'token' => $key,
+            'token_secret' => $keySecret
+        ]);
+
+        $client = new Client();
+        $client->setDefaultOption('verify', false);
+        $client->setDefaultOption('auth', 'oauth');
+        $client->getEmitter()->attach($oAuth);
+
+        $response = $client->get('https://api.twitter.com/1.1/users/show.json', [
+            'query' => [
+                'id' => $userId,
+                'include_entities' => true
+            ]
+        ])->json();
+
+        $data = [
+            'provider' => 'twitter',
+            'token' => $key,
+            'token_secret' => $keySecret,
+            'auth_id' => $userId,
+            'names' => $response['name'],
+            'image' => $response['profile_image_url_https'],
+            'all' => $response
+        ];
+
+        $urlReturn = $this->loginProvider($data);
+        return redirect($urlReturn);
+    }
+
+    public function getLinkedinLogin()
+    {
+        $accessToken = $this->request->session()->get('access_token');
+        $client = new Client();
+        $client->setDefaultOption('verify', false);
+
+        $data = [
+            'oauth2_access_token' => $accessToken,
+            'format' => 'json'
+        ];
+
+        $stringInfo = 'id,first-name,last-name,picture-url,email-address';
+
+        $request = $client->createRequest('GET', "https://api.linkedin.com/v1/people/~:($stringInfo)?" . http_build_query($data), []);
+        $response = json_decode($client->send($request)->getBody()->getContents());
+
+        $data = [
+            'provider' => 'linkedin',
+            'access_token' => $accessToken,
+            'auth_id' => $response->id,
+            'email' => $response->emailAddress,
+            'names' => $response->firstName,
+            'lastnames' => $response->lastName,
+            'image' => $response->pictureUrl,
+            'all' => $response
         ];
 
         $urlReturn = $this->loginProvider($data);

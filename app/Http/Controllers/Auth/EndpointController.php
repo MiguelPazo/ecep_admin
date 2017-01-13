@@ -18,6 +18,87 @@ class EndpointController extends Controller
         $this->error = $request->get('error');
     }
 
+    public function getGemaltoAuth()
+    {
+        if (!$this->error) {
+            $stateGemalto = $this->request->session()->get('stateGemalto');
+            $code = $this->request->get('code');
+            $state = $this->request->get('state');
+
+            if ($stateGemalto == $state) {
+                $client = new Client();
+                $client->setDefaultOption('verify', false);
+                $tokenEndpoint = 'https://idp.reniec.gemalto.com/idp/frontcontroller/openidconnect/token';
+
+                $request = $client->createRequest('POST', $tokenEndpoint, [
+                    'auth' => [
+                        'ecep_admin',
+                        '12345678'
+                    ],
+                    'body' => [
+                        'grant_type' => 'authorization_code',
+                        'code' => $code,
+                        'redirect_uri' => HelperApp::baseUrl('/end-point/gemalto-auth'),
+                        'client_id' => 'ecep_admin'
+                    ]
+                ]);
+
+                $response = json_decode($client->send($request)->getBody()->getContents());
+
+                $this->request->session()->put('access_token', $response->access_token);
+                $this->request->session()->put('refresh_token', $response->refresh_token);
+                $this->request->session()->put('id_token', $response->id_token);
+
+                return redirect(HelperApp::baseUrl('/auth/gemalto-login'));
+            } else {
+                Log::error('State esperado: ' . $stateGemalto);
+                Log::error('State recivido: ' . $state);
+                return redirect()->to(HelperApp::baseUrl('/'));
+            }
+        } else {
+            return redirect()->to(HelperApp::baseUrl('/'));
+        }
+    }
+
+    public function getSafeLayer()
+    {
+        if (!$this->error) {
+            $stateSafeLayer = $this->request->session()->get('stateSafelayer');
+            $code = $this->request->get('code');
+            $state = $this->request->get('state');
+
+            if ($state && $stateSafeLayer == $state) {
+                $client = new Client();
+                $client->setDefaultOption('verify', false);
+                $tokenEndpoint = 'https://trustedx-sfly01.safelayer.com/trustedx-authserver/oauth/eidas-provider/token';
+
+                $request = $client->createRequest('POST', $tokenEndpoint, [
+                    'auth' => [
+                        '1980955644384241',
+                        'd37eb21c07172ee0634e69555e641b212'
+                    ],
+                    'body' => [
+                        'grant_type' => 'authorization_code',
+                        'code' => $code,
+                        'redirect_uri' => HelperApp::baseUrl('/end-point/safe-layer')
+                    ]
+                ]);
+
+                $response = json_decode($client->send($request)->getBody()->getContents());
+
+                $this->request->session()->put('access_token', $response->access_token);
+
+                return redirect(HelperApp::baseUrl('/auth/safelayer-login'));
+            } else {
+                Log::error('State esperado: ' . $stateSafeLayer);
+                Log::error('State recivido: ' . $state);
+                return redirect()->to(HelperApp::baseUrl('/'));
+            }
+        } else {
+            return redirect()->to(HelperApp::baseUrl('/'));
+        }
+    }
+
     public function getGoogleAuth()
     {
         if (!$this->error) {
@@ -151,109 +232,4 @@ class EndpointController extends Controller
             return redirect()->to(HelperApp::baseUrl('/'));
         }
     }
-
-    public function getDnieAuth()
-    {
-        $wData = array_key_exists('HTTP_RENIECSUBJECTDN', $_SERVER);
-
-        if ($wData) {
-            $givename = 'GIVENNAME';
-            $surname = 'SURNAME';
-            $subject = $_SERVER['HTTP_RENIECSUBJECTDN'];
-            $name = substr($subject, strpos($subject, $givename) + strlen($givename) + 1);
-            $name = substr($name, 0, strpos($name, ','));
-            $lastname = substr($subject, strpos($subject, $surname) + strlen($surname) + 1);
-            $lastname = substr($lastname, 0, strpos($lastname, ','));
-
-            $this->request->session()->put('dni_name', $name);
-            $this->request->session()->put('dni_lastname', $lastname);
-
-            return redirect(HelperApp::baseUrl('/auth/dnie-login'));
-
-        } else {
-            return redirect()->to(HelperApp::baseUrl('/'));
-        }
-    }
-
-    public function getGemaltoAuth()
-    {
-        if (!$this->error) {
-            $stateGemalto = $this->request->session()->get('stateGemalto');
-            $code = $this->request->get('code');
-            $state = $this->request->get('state');
-
-            if ($stateGemalto == $state) {
-                $client = new Client();
-                $client->setDefaultOption('verify', false);
-                $tokenEndpoint = 'https://idp.reniec.gemalto.com/idp/frontcontroller/openidconnect/token';
-
-                $request = $client->createRequest('POST', $tokenEndpoint, [
-                    'auth' => [
-                        'ecep_admin',
-                        '12345678'
-                    ],
-                    'body' => [
-                        'grant_type' => 'authorization_code',
-                        'code' => $code,
-                        'redirect_uri' => HelperApp::baseUrl('/end-point/gemalto-auth'),
-                        'client_id' => 'ecep_admin'
-                    ]
-                ]);
-
-                $response = json_decode($client->send($request)->getBody()->getContents());
-
-                $this->request->session()->put('access_token', $response->access_token);
-                $this->request->session()->put('refresh_token', $response->refresh_token);
-                $this->request->session()->put('id_token', $response->id_token);
-
-                return redirect(HelperApp::baseUrl('/auth/gemalto-login'));
-            } else {
-                Log::error('State esperado: ' . $stateGemalto);
-                Log::error('State recivido: ' . $state);
-                return redirect()->to(HelperApp::baseUrl('/'));
-            }
-        } else {
-            return redirect()->to(HelperApp::baseUrl('/'));
-        }
-    }
-
-    public function getSafeLayer()
-    {
-        if (!$this->error) {
-            $stateGemalto = $this->request->session()->get('stateSafelayer');
-            $code = $this->request->get('code');
-            $state = $this->request->get('state');
-
-            if ($state && $stateGemalto == $state) {
-                $client = new Client();
-                $client->setDefaultOption('verify', false);
-                $tokenEndpoint = 'https://trustedx-sfly01.safelayer.com/trustedx-authserver/oauth/eidas-provider/token';
-
-                $request = $client->createRequest('POST', $tokenEndpoint, [
-                    'auth' => [
-                        '1980955644384241',
-                        'd37eb21c07172ee0634e69555e641b212'
-                    ],
-                    'body' => [
-                        'grant_type' => 'authorization_code',
-                        'code' => $code,
-                        'redirect_uri' => HelperApp::baseUrl('/end-point/safe-layer')
-                    ]
-                ]);
-
-                $response = json_decode($client->send($request)->getBody()->getContents());
-
-                $this->request->session()->put('access_token', $response->access_token);
-
-                return redirect(HelperApp::baseUrl('/auth/safelayer-login'));
-            } else {
-                Log::error('State esperado: ' . $stateGemalto);
-                Log::error('State recivido: ' . $state);
-                return redirect()->to(HelperApp::baseUrl('/'));
-            }
-        } else {
-            return redirect()->to(HelperApp::baseUrl('/'));
-        }
-    }
-
 }

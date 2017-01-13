@@ -24,6 +24,14 @@
                                 <p>{{ $localLabels[$key] }} <b>{{ $value }}</b></p>
                             @endif
                         @endforeach
+
+                        @if($data['all'])
+                            <pre>
+                                <?php
+                                echo json_encode($data['all'], JSON_PRETTY_PRINT);
+                                ?>
+                            </pre>
+                        @endif
                     </div>
                 </div>
             </div>
