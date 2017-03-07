@@ -112,7 +112,7 @@ class EndpointController extends Controller
             $goClient->addScope(\Google_Service_People::USERINFO_PROFILE);
 
             $goClient->authenticate($code);
-            dd($goClient->getAccessToken());
+
             $this->request->session()->put('access_token', $goClient->getAccessToken());
 
             return redirect(HelperApp::baseUrl('/auth/google-login'));
