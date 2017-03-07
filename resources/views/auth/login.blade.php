@@ -7,8 +7,8 @@
                 <h1>ECEP - ADMIN</h1>
 
                 <p>Ingrese con cualquiera de las siguientes opciones:</p>
-                <a href="{{ $loginGemalto }}" class="login-gemalto">Ingrese con Proveedor (OP-CF)</a>
-                <a id="login_if" href="#" class="login-gemalto">Ingrese con Proveedor (OP - IF)</a>
+                {{--<a href="{{ $loginGemalto }}" class="login-gemalto">Ingrese con Proveedor (OP-CF)</a>--}}
+                {{--<a id="login_if" href="#" class="login-gemalto">Ingrese con Proveedor (OP - IF)</a>--}}
                 <a href="{{ $loginSafelayer }}" class="login-safelayer">Ingrese con Proveedor (MID)</a>
                 <a href="{{ $loginSafelayerPass }}" class="login-safelayer">Ingrese con Proveedor (U/P)</a>
                 <a href="{{ $loginGoogle }}" class="login-google">Ingrese con Google</a>
